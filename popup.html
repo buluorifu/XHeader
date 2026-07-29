@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XHeader</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="presentation">
+              <rect class="brand-mark-bg" x="1" y="1" width="30" height="30" rx="9"></rect>
+              <path class="brand-mark-x" d="M10 10l12 12M22 10L10 22"></path>
+              <path class="brand-mark-lines" d="M22 9h3M22 13h3M22 17h3"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="brand-name">XHeader</p>
+            <p class="brand-caption">本地请求头工作台</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="engine-status" id="engineStatus"><span class="status-dot" id="engineStatusDot"></span><span id="engineStatusText">运行中</span></span>
+          <button class="icon-button" id="exportButton" type="button" title="导出配置" aria-label="导出配置">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9M6.5 8.5L10 12l3.5-3.5M4 15.5h12"></path></svg>
+          </button>
+          <button class="icon-button" id="importButton" type="button" title="导入配置" aria-label="导入配置">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12V3M6.5 6.5L10 3l3.5 3.5M4 15.5h12"></path></svg>
+          </button>
+          <input id="importFile" type="file" accept="application/json" hidden>
+          <label class="switch" title="启用全部规则">
+            <input id="globalEnabled" type="checkbox">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+            <span class="switch-label" id="globalEnabledLabel">启用</span>
+          </label>
+        </div>
+      </header>
+
+      <div class="workspace-shell">
+        <aside class="profile-sidebar" aria-labelledby="profileHeading">
+          <div class="sidebar-heading">
+            <div>
+              <h1 id="profileHeading">工作环境</h1>
+              <p class="section-subtitle">选择配置</p>
+            </div>
+            <button class="new-profile-button" id="newProfileButton" type="button" title="新建配置" aria-label="新建配置">＋</button>
+          </div>
+          <div class="profile-list" id="profileList" role="listbox" aria-label="配置文件列表"></div>
+          <div class="sidebar-footnote"><span class="sidebar-footnote-dot"></span> 当前配置自动生效</div>
+        </aside>
+
+        <section class="editor" aria-labelledby="editorHeading">
+        <div class="section-heading">
+          <div>
+            <h2 id="editorHeading">规则编辑器</h2>
+            <p class="section-subtitle">只在当前匹配范围内发送</p>
+          </div>
+          <div class="editor-heading-actions">
+            <span class="save-status" id="saveStatus" role="status">已保存</span>
+            <label class="profile-switch" title="启用当前配置">
+              <input id="profileEnabled" type="checkbox">
+              <span class="profile-switch-label">启用</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="profileName">配置名称</label>
+          <input id="profileName" type="text" maxlength="80" placeholder="例如：测试环境">
+        </div>
+
+        <div class="field-group">
+          <div class="label-row">
+            <label for="profileScope">匹配范围</label>
+            <span class="scope-badge" id="scopeBadge">全部网站</span>
+          </div>
+          <input id="profileScope" type="text" maxlength="2000" placeholder="example.com, localhost 或 *">
+          <p class="helper-text">支持域名、路径和完整 URL；多个范围用逗号分隔。</p>
+        </div>
+
+        <div class="headers-heading">
+          <div>
+            <label>请求头规则</label>
+            <span class="field-hint" id="headerCount">0 条</span>
+          </div>
+          <button class="secondary-button" id="addHeaderButton" type="button"><span aria-hidden="true">＋</span> 添加规则</button>
+        </div>
+        <div class="headers-column-labels" aria-hidden="true"><span>请求头名称</span><span>值</span><span>方式</span><span></span></div>
+        <div class="headers-list" id="headersList"></div>
+
+        <div class="editor-footer">
+          <button class="danger-button" id="deleteProfileButton" type="button"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 5h10M7 5V3.5h4V5M6 7.5v6M9 7.5v6M12 7.5v6M5 5l.6 10h6.8L13 5"></path></svg> 删除配置</button>
+          <p class="security-note"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2.5l5 2v3.7c0 3.1-2.1 5.8-5 7.3-2.9-1.5-5-4.2-5-7.3V4.5l5-2zM6.5 9l1.7 1.7L11.8 7"></path></svg> 配置只保存在此浏览器</p>
+        </div>
+        </section>
+      </div>
+
+      <footer class="footer-note">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="ruleSummary">规则引擎准备就绪</span>
+        <span class="footer-separator">·</span>
+        <span>Manifest V3</span>
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>
